@@ -26,11 +26,10 @@ with open('target.csv', 'r') as csvfile:
             name=x[0]
             number=x[1]
             message=''.join(x[2:])
-            data_base[number]=message
+            data_base[number]=str(message).replace('"',"").replace("\n",'')
 
 
 print(data_base)
-
 
 # get mobile no from csv file
 
@@ -105,3 +104,5 @@ def main():
 
 if __name__ == '__main__':
     main()
+
+
