@@ -15,12 +15,21 @@ message_text = 'Testing automation tool, :)'
 no_of_message = 1
 # no. of time you want the message to be send
 
-moblie_no_list = []
+data_base={}
 # list of phone number can be of any length
 
-with open('test_numbers.csv', 'r') as csvfile:
-    moblie_no_list = [int(row[0])
-                      for row in csv.reader(csvfile, delimiter=';')]
+with open('target.csv', 'r') as csvfile:
+    # moblie_no_list = [int(row[0])for row in csv.reader(csvfile, delimiter=';')]
+    for row in (csvfile):
+        x = (list(map(str, row.split(','))))
+        if(x[1][0:2]=='91'):
+            name=x[0]
+            number=x[1]
+            message=''.join(x[2:])
+            data_base[number]=message
+
+
+print(data_base)
 
 
 # get mobile no from csv file
@@ -29,7 +38,6 @@ def element_presence(by, xpath, time):
 
     element_present = EC.presence_of_element_located((By.XPATH, xpath))
     WebDriverWait(driver, time).until(element_present)
-
 
 # def is_connected():
 #
@@ -47,16 +55,8 @@ options.add_argument("start-maximized")
 
 # ->format
 # __user__data__PATH__="C:/Users/Vaibhaw/AppData/Local/Google/Chrome/User Data"
-options.add_argument(r"__user__data__PATH__".format(getpass.getuser()))
-
-
+options.add_argument(r"C:/Users/Vaibhaw/AppData/Local/Google/Chrome/User Data".format(getpass.getuser()))
 options = webdriver.ChromeOptions()
-# # options.binary_location = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
-# # chrome_driver_binary = "./chromedriver"
-# driver = webdriver.Chrome(chrome_driver_binary, chrome_options=options)
-
-
-
 driver = webdriver.Chrome(options=options)
 
 # driver = webdriver.Chrome()
@@ -92,9 +92,9 @@ def send_whatsapp_msg(phone_no, text):
 
 
 def main():
-      for moblie_no in moblie_no_list:
+      for moblie_no,message in data_base.items():
           try:
-              send_whatsapp_msg(phone_no=moblie_no, text=message_text)
+              send_whatsapp_msg(phone_no=moblie_no, text=message)
           except Exception as e:
      
               sleep(5)
